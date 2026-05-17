@@ -1,7 +1,8 @@
 import os
 import uuid
 from datetime import datetime
-from langchain_huggingface import HuggingFaceEmbeddings
+#from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from pprint import pprint
 from weaviate.classes.config import Configure, Property, DataType
 from weaviate.classes.query import Filter
@@ -10,11 +11,15 @@ from weaviate.classes.query import Filter
 
 EMBEDDING_MODEL = "BAAI/bge-large-en-v1.5"
 
-embedding_model = HuggingFaceEmbeddings(
-        model_name=EMBEDDING_MODEL,
-        model_kwargs={'device': 'cpu'},
-        encode_kwargs={'normalize_embeddings': True}
-    )
+# embedding_model = HuggingFaceEmbeddings(
+#         model_name=EMBEDDING_MODEL,
+#         model_kwargs={'device': 'cpu'},
+#         encode_kwargs={'normalize_embeddings': True}
+#     )
+embedding_model = OpenAIEmbeddings(
+    model="text-embedding-3-large",
+    api_key=os.environ["OPENAI_API_KEY"]
+)
 
 CLASS_NAME = "AegisPolicy"
 
@@ -196,5 +201,11 @@ def search_collection(query: str, wv_client, top_k: int = 5, filters: Filter = N
         print(f"Vector search failed: {e}")
 
         return []
-# if __name__ == "__main__":
-#     delete_collection(wv_client)
+if __name__ == "__main__":
+    import weaviate
+    from weaviate.classes.init import Auth
+    wv_client = weaviate.connect_to_weaviate_cloud(
+    cluster_url=os.environ["WEAVIATE_URL"],
+    auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
+    )
+    delete_collection(wv_client)
