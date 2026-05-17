@@ -1,12 +1,11 @@
 import streamlit as st
 import requests
 import uuid
+import os
 
 # Configuration - Change this to your live Render FastAPI URL after deploying it
-BACKEND_URL = st.sidebar.text_input(
-    "Backend API URL", 
-    value="http://127.0.0.1:8000"
-)
+default_url = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
+BACKEND_URL = st.sidebar.text_input("Backend API URL", value=default_url)
 
 st.set_page_config(
     page_title="AEGIS Policy Assistant", 
