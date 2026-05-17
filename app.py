@@ -80,7 +80,16 @@ for message in st.session_state.messages:
                         st.markdown(f"**Source {idx+1}: {src['document_id']}** (Relevance: {src['score']})")
                         if src.get("section"):
                             st.markdown(f"*Section:* {src['section']}")
-                        st.text_area(f"Preview (Chunk {idx+1})", src["text_preview"], height=100, disabled=True)
+                        
+                        # Added a dynamic unique key mapping the document ID and source index
+                        unique_widget_key = f"preview_chunk_{src.get('document_id', 'unknown')}_{idx}_{st.session_state.session_id}"
+                        st.text_area(
+                            label=f"Preview (Chunk {idx+1})", 
+                            value=src["text_preview"], 
+                            height=100, 
+                            disabled=True,
+                            key=unique_widget_key  # Prevents DuplicateElementId error
+                        )
 
             # Token info metric
             if diag.get("token_info"):
