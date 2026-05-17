@@ -16,3 +16,4 @@ fastapi
 uvicorn
 python-dotenv
 tiktoken
+cohere

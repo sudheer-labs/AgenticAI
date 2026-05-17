@@ -47,16 +47,16 @@ async def lifespan(app: FastAPI):
     # 1. Initialize API Clients
     get_clients()
     
-    # 2. Warm up the CrossEncoder model from chat.py
-    try:
-        from src.chat import preload_reranker
-        preload_reranker()
-    except ImportError:
-        try:
-            from src.chat import preload_reranker
-            preload_reranker()
-        except Exception as e:
-            print(f"Could not preload reranker: {e}")
+    # # 2. Warm up the CrossEncoder model from chat.py
+    # try:
+    #     from src.chat import preload_reranker
+    #     preload_reranker()
+    # except ImportError:
+    #     try:
+    #         from src.chat import preload_reranker
+    #         preload_reranker()
+    #     except Exception as e:
+    #         print(f"Could not preload reranker: {e}")
             
     print("[Startup] All models loaded. System ready to receive traffic.")
     yield
