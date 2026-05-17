@@ -1,9 +1,10 @@
 from langchain_openai import ChatOpenAI
 import re
 import json
+import os
 
 
-llm = ChatOpenAI(model="gpt-4o-mini", api_key="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")
+llm = ChatOpenAI(model="gpt-4o-mini", api_key=os.getenv("OPENAI_API_KEY"), temperature=0.2)
 
 
 def extract_llm_metadata(chunk_text: str):
@@ -45,9 +46,3 @@ def metadata_tagging(chunks: str):
     for chunk in chunks:
         chunk["metadata"] = {**chunk["metadata"], **llm_metadata}
     return chunks
-
-
-    
-
-
-

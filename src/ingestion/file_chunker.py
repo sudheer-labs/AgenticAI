@@ -1,13 +1,13 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_text_splitters import MarkdownTextSplitter, MarkdownHeaderTextSplitter
+from langchain_text_splitters import MarkdownHeaderTextSplitter
 import os
 from pprint import pprint
 
 
 headers_to_split_on = [
-                    ("#", "Header 1"),
-                    ("##", "Header 2"),
-                    ("###", "Header 3"),
+                    ("#", "header1"),
+                    ("##", "header2"),
+                    ("###", "header3"),
                 ]
 markdown_splitter = MarkdownHeaderTextSplitter(headers_to_split_on=headers_to_split_on,
                                                strip_headers=False)
@@ -32,7 +32,7 @@ def retrieve_chunks(text: str, chunk_size: int, chunk_overlap: int):
         metadata = doc.metadata
 
         # Skip Table of Contents chunks
-        if metadata.get("Header 2", "").lower() == "table of contents":
+        if metadata.get("header2", "").lower() == "table of contents":
             print("Skipping Table of Contents chunk")
             continue
         lines = content.strip().split("\n")
