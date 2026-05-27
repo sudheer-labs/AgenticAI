@@ -4,10 +4,10 @@ import json
 import os
 
 
-llm = ChatOpenAI(model="gpt-4o-mini", api_key=os.getenv("OPENAI_API_KEY"), temperature=0.2)
+#llm = ChatOpenAI(model="gpt-4o-mini", api_key=os.getenv("OPENAI_API_KEY"), temperature=0.2)
 
 
-def extract_llm_metadata(chunk_text: str):
+def extract_llm_metadata(chunk_text: str, llm):
 
     prompt = f"""You're a Corprate policy document parser.
     Given a chunk of text from a corporate policy document, 
@@ -39,10 +39,10 @@ def extract_llm_metadata(chunk_text: str):
     }
 
 
-def metadata_tagging(chunks: str):
+def metadata_tagging(chunks: str, llm):
 
     # Call the LLM with first chunk to extract metadata and then add the metadata to all chunks of the same document
-    llm_metadata = extract_llm_metadata(chunks[0]["content"])
+    llm_metadata = extract_llm_metadata(chunks[0]["content"], llm)
     for chunk in chunks:
         chunk["metadata"] = {**chunk["metadata"], **llm_metadata}
     return chunks
